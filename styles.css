@@ -2,7 +2,7 @@
     margin:0px;
   }
 
-  .over{
+  .under{
     position:fixed;
     width: 100%;
     height: 100%;
@@ -11,13 +11,17 @@
     z-index:1;
   }
 
-  .under {
-      height:100%;
-      width:100%;
-      padding: 45px 0;
-      margin: 0px;
-      background: black;
-      text-align: center;
+  .over {
+    height: 235px;
+    top: 50vh;
+    transform: translateY(-50%);
+    padding: 45px 0;
+    margin: 10px auto;
+    background: rgba(0,0,0,0.6);
+    text-align: center;
+    position: absolute;
+    z-index: 99;
+    text-align: center;
   }
 
   .wrap {
@@ -31,7 +35,7 @@
     /*z-index:0;*/
   }
 
-  .under h4{
+  .over h4{
     line-height:1.1rem;
     margin-top: 0;
     margin-bottom: 0;
@@ -40,7 +44,7 @@
       letter-spacing: 0.4rem;
   }
 
-  .under span {
+  .over span {
       font-size: 32px;
       letter-spacing: 0.3rem;
   }

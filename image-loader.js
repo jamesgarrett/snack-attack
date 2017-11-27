@@ -30,6 +30,24 @@
 
 	}
 
+	//assign your api key equal to a variable
+	var apiKey = 'b30dc72750a3f089c77c61f800289a1e';
+	//specify tags
+	var tags ='new%20york%20city';
+	//specify number of results
+	var per_page = '500';
+
+	url = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key='+ apiKey +'&tags='+ tags +'&format=json&sort=random&per_page='+ per_page +';jsoncallback=?';
+	
+	$(function(){
+				
+		//the initial json request to flickr
+		console.log(url);
+		$.getJSON(url, function(response){
+			            
+        });
+    });
+
 
 	function makeVisible(){
 		var rando = Math.floor((Math.random() * 501) + 1);
@@ -37,8 +55,12 @@
 		var element1 = document.getElementById(rando);
 		element1.classList.toggle('visible');
 		//console.log(element1);
-		setTimeout(function(){element1.classList.toggle('visible');},2000);
+		setTimeout(function(){element1.classList.toggle('visible');},4000);
 	}
 
 	 var refresh=6000; // Refresh rate in milli seconds
 	 mytime=setInterval('makeVisible()',refresh);
+
+	 $(document).ready(function(){
+	 	makeVisible();
+	 });

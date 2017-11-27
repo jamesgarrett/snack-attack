@@ -1,0 +1,74 @@
+<!-- 
+
+                   ___           ___           ___           ___     
+       ___        /  /\         /  /\         /  /\         /  /\    
+      /__/\      /  /::\       /  /::|       /  /::\       /  /::\   
+      \__\:\    /  /:/\:\     /  /:|:|      /  /:/\:\     /__/:/\:\  
+  ___ /  /::\  /  /::\ \:\   /  /:/|:|__   /  /::\ \:\   _\_ \:\ \:\ 
+ /__/\  /:/\/ /__/:/\:\_\:\ /__/:/_|::::\ /__/:/\:\ \:\ /__/\ \:\ \:\
+ \  \:\/:/~~  \__\/  \:\/:/ \__\/  /~~/:/ \  \:\ \:\_\/ \  \:\ \:\_\/
+  \  \::/          \__\::/        /  /:/   \  \:\ \:\    \  \:\_\:\  
+   \__\/           /  /:/        /  /:/     \  \:\_\/     \  \:\/:/  
+                  /__/:/        /__/:/       \  \:\        \  \::/   
+                  \__\/         \__\/         \__\/         \__\/    
+      ___           ___           ___           ___           ___                                 
+     /  /\         /  /\         /  /\         /  /\         /  /\          ___           ___     
+    /  /::\       /  /::\       /  /::\       /  /::\       /  /::\        /__/\         /__/\    
+   /  /:/\:\     /  /:/\:\     /  /:/\:\     /  /:/\:\     /  /:/\:\       \  \:\        \  \:\   
+  /  /:/  \:\   /  /::\ \:\   /  /::\ \:\   /  /::\ \:\   /  /::\ \:\       \__\:\        \__\:\  
+ /__/:/_\_ \:\ /__/:/\:\_\:\ /__/:/\:\_\:\ /__/:/\:\_\:\ /__/:/\:\ \:\      /  /::\       /  /::\ 
+ \  \:\__/\_\/ \__\/  \:\/:/ \__\/~|::\/:/ \__\/~|::\/:/ \  \:\ \:\_\/     /  /:/\:\     /  /:/\:\
+  \  \:\ \:\        \__\::/     |  |:|::/     |  |:|::/   \  \:\ \:\      /  /:/__\/    /  /:/__\/
+   \  \:\/:/        /  /:/      |  |:|\/      |  |:|\/     \  \:\_\/     /__/:/        /__/:/     
+    \  \::/        /__/:/       |__|:|~       |__|:|~       \  \:\       \__\/         \__\/      
+     \__\/         \__\/         \__\|         \__\|         \__\/                                
+
+
+ -->
+<html>
+<head>
+<title>New York</title>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<meta name="author" content="github.com/jamesgarrett">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="colorify.css">
+
+ <script src="colorify.js"></script>
+
+<script type="text/javascript" src="date.js"></script>
+
+<script type="text/javascript" src="image-loader.js"></script>
+
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
+
+<meta http-equiv="refresh" content="3600"> <!-- This is the refresh Timer - It resets the page every 3600 seconds, 1 hour -->
+</head>
+
+<body onload="display_ct();makeVisible();">
+	<div class="wrap">
+		<div class="over col-md-4 col-md-offset-4">			
+                <span id='city'>New York<br></span>
+            
+                <span id='time' height="50" style="font-size:30px;"></span><br>
+            
+                <span id='date' height="50" style="font-size:30px;"></span>
+        </div>
+		<div class="under">
+			<span id="image-container" class="container" colorify-main-color><img src="/" class="colorify" alt=""></span>
+		</div>
+	</div>
+</body>
+
+<footer>
+</footer>
+
+</html>

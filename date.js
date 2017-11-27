@@ -1,5 +1,10 @@
+
+
 	var refresh=1000; // Refresh rate in milli seconds
 	mytime=setInterval('display_ct()',refresh);
+
+	utc_zone = -5;
+	utc_adjust = -5;
 
 	// get the current timestamp - format the clock readout
 
@@ -10,8 +15,6 @@
 	var minutes = x.getMinutes();
 	var hours = x.getHours();
 	var pm = false;
-	var utc_adjust = -5;
-	var utc_zone = -5;
 
 	// check if the city is in our timezone, if not make the necessary adjustment
 
@@ -76,9 +79,6 @@
 
 	// find out if we need to adjust date for utc
 
-	var utc_adjust = -5;
-	var utc_zone = -5;
-
 	if (utc_zone == -5){
 		console.log('usa! usa!');
 		utc_hours = (utc_zone - utc_adjust);
@@ -104,3 +104,8 @@
 	} else {
 		var formatted_date = (m_names[tomorrow_month] + " " + curr_date + "," + " " + curr_year);
 	}
+
+$(document).ready(function(){
+	display_ct();
+	
+});
