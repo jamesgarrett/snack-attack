@@ -1,0 +1,78 @@
+ body{
+    margin:0px;
+  }
+
+  .over{
+    position:fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index:1;
+  }
+
+  .under {
+      height:100%;
+      width:100%;
+      padding: 45px 0;
+      margin: 0px;
+      background: black;
+      text-align: center;
+  }
+
+  .wrap {
+    color: white;
+    background: black;
+    font-family: 'helveticaneue','helvetica';
+    text-transform: uppercase;
+    display:table;
+    width:100%;
+    height:100%;
+    /*z-index:0;*/
+  }
+
+  .under h4{
+    line-height:1.1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top:10px;
+    font-size: 18px;
+      letter-spacing: 0.4rem;
+  }
+
+  .under span {
+      font-size: 32px;
+      letter-spacing: 0.3rem;
+  }
+
+
+  #time, #date, #power, #runtime, #countdown, #zeros{
+    font-size: 2.5rem;
+    font-weight:normal;
+  }
+
+  .panel-right{
+    width:100%;
+  }
+
+  .hiding{
+    visibility:hidden;
+  }
+  .visible{
+    visibility: visible!important;
+      position: fixed;
+      top: 0;
+      left: 0;
+  }
+
+  span#time > span {
+      display: inline-block;
+  } 
+
+  span#time{
+    top:104px;
+  }
+
+  span#date {
+      top: 165px;
+  }
