@@ -1,37 +1,55 @@
 import $ from 'jquery';
 import _ from 'lodash';
-import moment from 'moment';
+import {DateTime} from 'luxon';
+import config from '../config';
 
 $(document).ready(function(){
+
+	const ct = DateTime.local();
 
 	// App object to store all app relates metods
 	var App = {
 		init: function() {
-		  // Methods that need to be called on initialization
 		  App.setDate();
-  		  App.bindEvents();
+		  App.setTime();
+		  App.bindEvents();
 		},
 		bindEvents: function() {
-		  $(".get-location-button").on("click", App.getLocation);
+			console.log('click');
+		  $(".get-location-button").bind("click", App.initMap);
 		},
-		getDate: function(){
-			var now = new Date();
-			return moment(now).format('MMMM Do YYYY, h:mm:ss a');
+		getTime: function(ct){
+			var time = ct.toLocaleString(DateTime.TIME_WITH_SHORT_OFFSET);
+			return time;
+		},
+		getDate: function(ct){
+			var date = ct.toLocaleString(DateTime.DATE_HUGE);
+			return date;
+		},
+		setTime: function(){
+			$('#time').text(App.getTime(ct));
 		},
 		setDate: function(){
-			$('#date').text(App.getDate());
+			$('#date').text(App.getDate(ct));
 		},
 		getLocation: function(){
 	    	navigator.geolocation.getCurrentPosition(function(position) {
-	            const latitude = position.coords.latitude;
-	            const longitude = position.coords.longitude;
-
-	            console.log(latitude + ' ' + longitude);
+	            var coords = {
+	            	lat : position.coords.latitude,
+	            	long : position.coords.longitude
+	            };
 	        });
 	    },
-		setView: function(viewType) {
+	    initMap: function(){
+	    	var position = App.getLocation();
+	    	console.log(position);
+	        var map = new google.maps.Map(
+	        	document.getElementById('map'), {
+	        	center: {lat: 45, lng: 45},
+	        	zoom: 15
+		    });
 		}
 	};
 
-  App.init();
+  	App.init();
 });
