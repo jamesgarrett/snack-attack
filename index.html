@@ -7,31 +7,26 @@
 
 <link rel="stylesheet" href="styles.css">
 
-<script type="text/javascript" src="date.js"></script>
-<script type="text/javascript" src="image-loader.js"></script>
-
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-<meta http-equiv="refresh" content="3600"> <!-- This is the refresh Timer - It resets the page every 3600 seconds, 1 hour -->
 </head>
 
-<body>
-	<div class="wrap">
-		<div class="over col-md-4 col-md-offset-4">			
-                <span id='city'>New York<br></span>
-            
-                <span id='time' height="50" style="font-size:30px;"></span><br>
-            
-                <span id='date' height="50" style="font-size:30px;"></span>
-        </div>
-		<div class="under">
-			<span id="image-container" class="container" colorify-main-color><img src="/" class="colorify" alt=""></span>
+	<body>
+		<div class="wrap">
+			<div class="over col-md-4 col-md-offset-4">			
+	                <span id='city'>New York<br></span>
+	            
+	                <span id='time' height="50" style="font-size:30px;"></span><br>
+	            
+	                <span id='date' height="50" style="font-size:30px;"></span>
+
+	                <button class="get-location-button" value="Get Photos and Time By Location">Get Photos and Time By Location</button>
+	        </div>
+			<div class="under">
+				<span id="image-container" class="container" colorify-main-color><img src="/" class="colorify" alt=""></span>
+			</div>
 		</div>
-	</div>
-</body>
-
-<footer>
-</footer>
-
+	</body>
+	<script src="js/app.bundle.js"></script>
 </html>

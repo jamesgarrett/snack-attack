@@ -1,0 +1,31 @@
+{
+  "name": "image-clock",
+  "version": "1.0.0",
+  "description": "an app for keeping time and date based on location",
+  "main": "app.js",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "http-server": "^0.10.0",
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.3",
+    "webpack": "^3.8.1"
+  },
+  "scripts": {
+    "webpack": "node_modules/webpack/bin/webpack.js --watch",
+    "server": "node_modules/http-server/bin/http-server -c-1",
+    "start": "npm run webpack & npm run server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesgarrett/JS-FINAL.git"
+  },
+  "author": "james garrett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesgarrett/JS-FINAL/issues"
+  },
+  "homepage": "https://github.com/jamesgarrett/JS-FINAL#readme"
+}
