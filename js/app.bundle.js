@@ -89,8 +89,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _jquery2.default)(document).ready(function () {
 
 	var ct = _luxon.DateTime.local();
+	var infoWindow;
+	var map;
 
-	// App object to store all app relates metods
+	// App object to store all app relates methods
 	var App = {
 		init: function init() {
 			App.setDate();
@@ -98,8 +100,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 			App.bindEvents();
 		},
 		bindEvents: function bindEvents() {
-			console.log('click');
-			(0, _jquery2.default)(".get-location-button").bind("click", App.initMap);
+			(0, _jquery2.default)(".get-location-button").on("click", App.getLocation);
 		},
 		getTime: function getTime(ct) {
 			var time = ct.toLocaleString(_luxon.DateTime.TIME_WITH_SHORT_OFFSET);
@@ -116,19 +117,62 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 			(0, _jquery2.default)('#date').text(App.getDate(ct));
 		},
 		getLocation: function getLocation() {
+			console.log('click');
 			navigator.geolocation.getCurrentPosition(function (position) {
 				var coords = {
 					lat: position.coords.latitude,
-					long: position.coords.longitude
+					lng: position.coords.longitude
 				};
+				// debugger;
+				App.requestMap(coords);
 			});
 		},
-		initMap: function initMap() {
-			var position = App.getLocation();
-			console.log(position);
+		requestMap: function requestMap(coords) {
+			// current position
+			var cp = coords;
+
+			// create map instance
 			var map = new google.maps.Map(document.getElementById('map'), {
-				center: { lat: 45, lng: 45 },
+				center: cp,
 				zoom: 15
+			});
+
+			var here = new google.maps.Marker({
+				map: map,
+				position: cp
+			});
+
+			// create infowindow for places
+			infoWindow = new google.maps.InfoWindow();
+			var service = new google.maps.places.PlacesService(map);
+
+			// search for restaurants within radius of current position, make places request
+			service.nearbySearch({
+				location: cp,
+				radius: 500,
+				type: ['pizza']
+			}, App.requestPlaces);
+		},
+		requestPlaces: function requestPlaces(results, status) {
+			if (status === google.maps.places.PlacesServiceStatus.OK) {
+				for (var i = 0; i < results.length; i++) {
+					var place = results[i];
+					console.log(place);
+					App.createMarker(place);
+				}
+			}
+		},
+		createMarker: function createMarker(place) {
+			// debugger;
+			var placeLoc = place.geometry.location;
+			var marker = new google.maps.Marker({
+				map: map,
+				position: place.geometry.location
+			});
+
+			google.maps.event.addListener(marker, 'click', function () {
+				infoWindow.setContent(place.name);
+				infoWindow.open(map, this);
 			});
 		}
 	};
