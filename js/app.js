@@ -8,6 +8,7 @@ $(document).ready(function(){
 	var ct = DateTime.local();
 	var infoWindow;
 	var map;
+	var cp;
 
 	// App object to store all app relates methods
 	var App = {
@@ -15,9 +16,10 @@ $(document).ready(function(){
 		  App.setDate();
 		  App.setTime();
 		  App.bindEvents();
+		  App.getLocation();
 		},
 		bindEvents: function() {
-		  	$(".get-location-button").on("click", App.getLocation);
+		  	$('.snack').on('click', App.formatPlacesRequest);
 		},
 		getTime: function(ct){
 			var time = ct.toLocaleString(DateTime.TIME_WITH_SHORT_OFFSET);
@@ -34,7 +36,6 @@ $(document).ready(function(){
 			$('#date').text(App.getDate(ct));
 		},
 		getLocation: function(){
-			console.log('click');
 	    	navigator.geolocation.getCurrentPosition(function(position) {
 	            var coords = {
 	            	lat : position.coords.latitude,
@@ -46,47 +47,55 @@ $(document).ready(function(){
 	    },
 	    requestMap: function(coords){
 	    	// current position
-	    	var cp = coords;
+	    	cp = coords;
 
 	    	// create map instance
-	        var map = new google.maps.Map(
+	        map = new google.maps.Map(
 	        	document.getElementById('map'), {
 	        	center: cp,
-	        	zoom: 15
+	        	zoom: 16,
 		    });
 
 		    var here = new google.maps.Marker({
 		    	map: map,
 		    	position: cp
 		    });
+		},
+		formatPlacesRequest: function(){
+			var food = $(this).attr('value');
 
 	        // create infowindow for places
 		    infoWindow = new google.maps.InfoWindow();
 	        var service = new google.maps.places.PlacesService(map);
 
-	        // search for restaurants within radius of current position, make places request
-	        service.nearbySearch({
+	        var request = {
 	          location: cp,
 	          radius: 500,
-	          type: ['pizza']
-	        }, App.requestPlaces);
+	          query: food
+		    };
+
+	        // search for restaurants within radius of current position, make places request
+	        service.nearbySearch(request, App.requestPlaces);
 		},
 		requestPlaces: function(results, status) {
+			console.log('places requested');
 	        if (status === google.maps.places.PlacesServiceStatus.OK) {
 	          for (var i = 0; i < results.length; i++) {
 	          	var place = results[i];
-	          	console.log(place);
+  		   		// debugger;
 	            App.createMarker(place);
 	          }
 	        }
 	    },
 	   	createMarker: function(place) {
-	   		// debugger;
 	        var placeLoc = place.geometry.location;
+	        console.log('place location' + placeLoc);
 	        var marker = new google.maps.Marker({
 	          map: map,
-	          position: place.geometry.location
+	          position: placeLoc,
+	          title: 'hello world'
 	        });
+	        console.log('marker: ' + marker.position);
 
 	        google.maps.event.addListener(marker, 'click', function() {
 	          infoWindow.setContent(place.name);

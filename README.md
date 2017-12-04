@@ -1,8 +1,6 @@
 # JS-FINAL
 An app for keeping time and date based on location
 
-This app is designed to find photos from flickr and display them behind a clock overlay
+This app is designed to find your current location and provide a map of locations nearby to get snacks
 
-Features slated for development include
-- loading time and city based on location from browser prompt
-- loading photos within geographic area of that location
+The app uses the google places API and the built in query function to find different types of snacks near you.
