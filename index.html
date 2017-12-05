@@ -11,18 +11,36 @@
 </head>
 	<body>
 		<div class="wrap">
-			<div class="text-center col-md-6 offset-md-3">			
-                <!-- <h2 id="date"></h2> -->
-                <!-- <h2 id="time"></h2> -->
-                <div id="map"></div>
-                <button class="snack" value="pizza">Pizza</button>
-                <button class="snack" value="tacos">Tacos</button>
-                <button class="snack" value="bagels">Bagels</button>
-                <button class="snack" value="coffee">Coffee</button>
-                <button class="snack" value="ice%20cream">Ice Cream</button>
-	        </div>
+			<header class="text-center col-md-6 offset-md-3">
+				<img src="/img/snack-attack.svg" class="logo" alt="snack attack logo">
+				<button class="search"><img src="/img/search.svg" alt=""></button>
+			</header>
+			<section class="cube-container">
+			  <div id="cube">
+			    <figure class="front">
+			      <div id="map"></div>
+			    </figure>
+			    <figure class="right hidden">
+			        <ul>			
+			        	<li><h2>What are you in the mood for?</h2></li>
+		                <li class="snack" value="pizza">Pizza</li>
+		                <li class="snack" value="tacos">Tacos</li>
+		                <li class="snack" value="bagels">Bagels</li>
+		                <li class="snack" value="coffee">Coffee</li>
+		                <li class="snack" value="ice%20cream">Ice Cream</li>
+			        </ul>
+			    </figure>
+			    <figure class="left">
+			      
+			    </figure>
+			  </div>
+			</section>
+		  
 		</div>
 	</body>
+	<script>
+
+	</script>
 	<script
     async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwkKhPCVMXGonMlM57zlukKimtZ1Pxpog&libraries=places"></script>
 	<script src="js/app.bundle.js"></script>

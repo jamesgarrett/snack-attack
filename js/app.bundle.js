@@ -88,105 +88,175 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _jquery2.default)(document).ready(function () {
 
-	var ct = _luxon.DateTime.local();
-	var infoWindow;
-	var map;
-	var cp;
+		var ct = _luxon.DateTime.local();
+		var infoWindow;
+		var map;
+		var cp;
+		var mapStyles = [{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] }, { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] }, { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] }, {
+				featureType: 'administrative.locality',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#d59563' }]
+		}, {
+				featureType: 'poi',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#d59563' }]
+		}, {
+				featureType: 'poi.park',
+				elementType: 'geometry',
+				stylers: [{ color: '#263c3f' }]
+		}, {
+				featureType: 'poi.park',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#6b9a76' }]
+		}, {
+				featureType: 'road',
+				elementType: 'geometry',
+				stylers: [{ color: '#38414e' }]
+		}, {
+				featureType: 'road',
+				elementType: 'geometry.stroke',
+				stylers: [{ color: '#212a37' }]
+		}, {
+				featureType: 'road',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#9ca5b3' }]
+		}, {
+				featureType: 'road.highway',
+				elementType: 'geometry',
+				stylers: [{ color: '#746855' }]
+		}, {
+				featureType: 'road.highway',
+				elementType: 'geometry.stroke',
+				stylers: [{ color: '#1f2835' }]
+		}, {
+				featureType: 'road.highway',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#f3d19c' }]
+		}, {
+				featureType: 'transit',
+				elementType: 'geometry',
+				stylers: [{ color: '#2f3948' }]
+		}, {
+				featureType: 'transit.station',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#d59563' }]
+		}, {
+				featureType: 'water',
+				elementType: 'geometry',
+				stylers: [{ color: '#17263c' }]
+		}, {
+				featureType: 'water',
+				elementType: 'labels.text.fill',
+				stylers: [{ color: '#515c6d' }]
+		}, {
+				featureType: 'water',
+				elementType: 'labels.text.stroke',
+				stylers: [{ color: '#17263c' }]
+		}];
 
-	// App object to store all app relates methods
-	var App = {
-		init: function init() {
-			App.setDate();
-			App.setTime();
-			App.bindEvents();
-			App.getLocation();
-		},
-		bindEvents: function bindEvents() {
-			(0, _jquery2.default)('.snack').on('click', App.formatPlacesRequest);
-		},
-		getTime: function getTime(ct) {
-			var time = ct.toLocaleString(_luxon.DateTime.TIME_WITH_SHORT_OFFSET);
-			return time;
-		},
-		getDate: function getDate(ct) {
-			var date = ct.toLocaleString(_luxon.DateTime.DATE_HUGE);
-			return date;
-		},
-		setTime: function setTime() {
-			(0, _jquery2.default)('#time').text(App.getTime(ct));
-		},
-		setDate: function setDate() {
-			(0, _jquery2.default)('#date').text(App.getDate(ct));
-		},
-		getLocation: function getLocation() {
-			navigator.geolocation.getCurrentPosition(function (position) {
-				var coords = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				};
-				// debugger;
-				App.requestMap(coords);
-			});
-		},
-		requestMap: function requestMap(coords) {
-			// current position
-			cp = coords;
+		// App object to store all app relates methods
+		var App = {
+				init: function init() {
+						App.setDate();
+						App.setTime();
+						App.bindEvents();
+						App.getLocation();
+				},
+				bindEvents: function bindEvents() {
+						(0, _jquery2.default)('.snack').on('click', App.formatPlacesRequest);
+						(0, _jquery2.default)('.search').on('click', function () {
+								(0, _jquery2.default)('.right').toggleClass('hidden');
+						});
+						(0, _jquery2.default)('.snack').on('click', function () {
+								(0, _jquery2.default)('.right').toggleClass('hidden');
+						});
+				},
+				getTime: function getTime(ct) {
+						var time = ct.toLocaleString(_luxon.DateTime.TIME_WITH_SHORT_OFFSET);
+						return time;
+				},
+				getDate: function getDate(ct) {
+						var date = ct.toLocaleString(_luxon.DateTime.DATE_HUGE);
+						return date;
+				},
+				setTime: function setTime() {
+						(0, _jquery2.default)('#time').text(App.getTime(ct));
+				},
+				setDate: function setDate() {
+						(0, _jquery2.default)('#date').text(App.getDate(ct));
+				},
+				getLocation: function getLocation() {
+						navigator.geolocation.getCurrentPosition(function (position) {
+								var coords = {
+										lat: position.coords.latitude,
+										lng: position.coords.longitude
+								};
+								// debugger;
+								App.requestMap(coords);
+						});
+				},
+				requestMap: function requestMap(coords) {
+						// current position
+						cp = coords;
 
-			// create map instance
-			map = new google.maps.Map(document.getElementById('map'), {
-				center: cp,
-				zoom: 16
-			});
+						// create map instance
+						map = new google.maps.Map(document.getElementById('map'), {
+								center: cp,
+								zoom: 16,
+								disableDefaultUI: true,
+								zoomControl: true,
+								styles: mapStyles
+						});
 
-			var here = new google.maps.Marker({
-				map: map,
-				position: cp
-			});
-		},
-		formatPlacesRequest: function formatPlacesRequest() {
-			var food = (0, _jquery2.default)(this).attr('value');
+						var here = new google.maps.Marker({
+								map: map,
+								position: cp
+						});
+				},
+				formatPlacesRequest: function formatPlacesRequest() {
+						var food = (0, _jquery2.default)(this).attr('value');
 
-			// create infowindow for places
-			infoWindow = new google.maps.InfoWindow();
-			var service = new google.maps.places.PlacesService(map);
+						// create infowindow for places
+						infoWindow = new google.maps.InfoWindow();
+						var service = new google.maps.places.PlacesService(map);
 
-			var request = {
-				location: cp,
-				radius: 500,
-				query: food
-			};
+						var request = {
+								location: cp,
+								radius: 500,
+								query: food
+						};
 
-			// search for restaurants within radius of current position, make places request
-			service.nearbySearch(request, App.requestPlaces);
-		},
-		requestPlaces: function requestPlaces(results, status) {
-			console.log('places requested');
-			if (status === google.maps.places.PlacesServiceStatus.OK) {
-				for (var i = 0; i < results.length; i++) {
-					var place = results[i];
-					// debugger;
-					App.createMarker(place);
+						// search for restaurants within radius of current position, make places request
+						service.nearbySearch(request, App.requestPlaces);
+				},
+				requestPlaces: function requestPlaces(results, status) {
+						console.log('places requested');
+						if (status === google.maps.places.PlacesServiceStatus.OK) {
+								for (var i = 0; i < results.length; i++) {
+										var place = results[i];
+										// debugger;
+										App.createMarker(place);
+								}
+						}
+				},
+				createMarker: function createMarker(place) {
+						var placeLoc = place.geometry.location;
+						console.log('place location' + placeLoc);
+						var marker = new google.maps.Marker({
+								map: map,
+								position: placeLoc,
+								title: 'hello world'
+						});
+						console.log('marker: ' + marker.position);
+
+						google.maps.event.addListener(marker, 'click', function () {
+								infoWindow.setContent(place.name);
+								infoWindow.open(map, this);
+						});
 				}
-			}
-		},
-		createMarker: function createMarker(place) {
-			var placeLoc = place.geometry.location;
-			console.log('place location' + placeLoc);
-			var marker = new google.maps.Marker({
-				map: map,
-				position: placeLoc,
-				title: 'hello world'
-			});
-			console.log('marker: ' + marker.position);
+		};
 
-			google.maps.event.addListener(marker, 'click', function () {
-				infoWindow.setContent(place.name);
-				infoWindow.open(map, this);
-			});
-		}
-	};
-
-	App.init();
+		App.init();
 });
 
 /***/ }),
