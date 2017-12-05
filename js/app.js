@@ -9,6 +9,25 @@ $(document).ready(function(){
 	var infoWindow;
 	var map;
 	var cp;
+	var food;
+
+    var icons = {
+      bagels: {
+        icon: '/img/bagels-mini.png'
+      },
+      coffee: {
+        icon: '/img/coffee-mini.png'
+      },
+      pizza: {
+        icon: '/img/pizza-mini.png'
+      },
+      tacos: {
+        icon: '/img/taco-mini.png'
+      },
+      icecream: {
+        icon: '/img/ice-cream-mini.png'
+      }
+    };
 	var mapStyles = [
             {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
@@ -21,7 +40,7 @@ $(document).ready(function(){
             {
               featureType: 'poi',
               elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
+              stylers: [{visibility:'off'}]
             },
             {
               featureType: 'poi.park',
@@ -90,6 +109,8 @@ $(document).ready(function(){
             }
           ];
 
+
+
 	// App object to store all app relates methods
 	var App = {
 		init: function() {
@@ -149,9 +170,10 @@ $(document).ready(function(){
 		    	map: map,
 		    	position: cp
 		    });
+
 		},
 		formatPlacesRequest: function(){
-			var food = $(this).attr('value');
+			food = $(this).attr('value');
 
 	        // create infowindow for places
 		    infoWindow = new google.maps.InfoWindow();
@@ -160,7 +182,7 @@ $(document).ready(function(){
 	        var request = {
 	          location: cp,
 	          radius: 500,
-	          query: food
+	          keyword: food
 		    };
 
 	        // search for restaurants within radius of current position, make places request
@@ -168,21 +190,23 @@ $(document).ready(function(){
 		},
 		requestPlaces: function(results, status) {
 			console.log('places requested');
+			console.log(results)
 	        if (status === google.maps.places.PlacesServiceStatus.OK) {
 	          for (var i = 0; i < results.length; i++) {
 	          	var place = results[i];
-  		   		// debugger;
 	            App.createMarker(place);
 	          }
 	        }
 	    },
 	   	createMarker: function(place) {
 	        var placeLoc = place.geometry.location;
+	        var foodIcon = '/img/' + food + '-mini.png';
 	        console.log('place location' + placeLoc);
 	        var marker = new google.maps.Marker({
 	          map: map,
 	          position: placeLoc,
-	          title: 'hello world'
+	          size: 10,
+	          icon: foodIcon
 	        });
 	        console.log('marker: ' + marker.position);
 
@@ -190,6 +214,24 @@ $(document).ready(function(){
 	          infoWindow.setContent(place.name);
 	          infoWindow.open(map, this);
 	        });
+	    },
+	    setView: function(viewType) {
+	      var $popup = $('#popUp');
+	      var $closePopUp = $('.closePopUp');
+	      if (viewType === 'loader') {
+	        $popup.removeClass('hidden');
+	        $closePopUp.addClass('hidden');
+	        $popup.addClass('loader');
+	      }
+	      else if (viewType === 'map') {
+	        $popup.removeClass('hidden');
+	        $closePopUp.removeClass('hidden');
+	        $popup.removeClass('loader');
+	      }
+	      else if (viewType === 'search') {
+	        $popup.addClass('hidden');
+	        $closePopUp.addClass('hidden');
+	      }
 	    }
 	};
 

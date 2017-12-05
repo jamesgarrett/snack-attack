@@ -92,6 +92,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 		var infoWindow;
 		var map;
 		var cp;
+		var food;
+
+		var icons = {
+				bagels: {
+						icon: '/img/bagels-mini.png'
+				},
+				coffee: {
+						icon: '/img/coffee-mini.png'
+				},
+				pizza: {
+						icon: '/img/pizza-mini.png'
+				},
+				tacos: {
+						icon: '/img/taco-mini.png'
+				},
+				icecream: {
+						icon: '/img/ice-cream-mini.png'
+				}
+		};
 		var mapStyles = [{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] }, { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] }, { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] }, {
 				featureType: 'administrative.locality',
 				elementType: 'labels.text.fill',
@@ -99,7 +118,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 		}, {
 				featureType: 'poi',
 				elementType: 'labels.text.fill',
-				stylers: [{ color: '#d59563' }]
+				stylers: [{ visibility: 'off' }]
 		}, {
 				featureType: 'poi.park',
 				elementType: 'geometry',
@@ -214,7 +233,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 						});
 				},
 				formatPlacesRequest: function formatPlacesRequest() {
-						var food = (0, _jquery2.default)(this).attr('value');
+						food = (0, _jquery2.default)(this).attr('value');
 
 						// create infowindow for places
 						infoWindow = new google.maps.InfoWindow();
@@ -223,7 +242,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 						var request = {
 								location: cp,
 								radius: 500,
-								query: food
+								keyword: food
 						};
 
 						// search for restaurants within radius of current position, make places request
@@ -231,21 +250,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 				},
 				requestPlaces: function requestPlaces(results, status) {
 						console.log('places requested');
+						console.log(results);
 						if (status === google.maps.places.PlacesServiceStatus.OK) {
 								for (var i = 0; i < results.length; i++) {
 										var place = results[i];
-										// debugger;
 										App.createMarker(place);
 								}
 						}
 				},
 				createMarker: function createMarker(place) {
 						var placeLoc = place.geometry.location;
+						var foodIcon = '/img/' + food + '-mini.png';
 						console.log('place location' + placeLoc);
 						var marker = new google.maps.Marker({
 								map: map,
 								position: placeLoc,
-								title: 'hello world'
+								size: 10,
+								icon: foodIcon
 						});
 						console.log('marker: ' + marker.position);
 
@@ -253,6 +274,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 								infoWindow.setContent(place.name);
 								infoWindow.open(map, this);
 						});
+				},
+				setView: function setView(viewType) {
+						var $popup = (0, _jquery2.default)('#popUp');
+						var $closePopUp = (0, _jquery2.default)('.closePopUp');
+						if (viewType === 'loader') {
+								$popup.removeClass('hidden');
+								$closePopUp.addClass('hidden');
+								$popup.addClass('loader');
+						} else if (viewType === 'map') {
+								$popup.removeClass('hidden');
+								$closePopUp.removeClass('hidden');
+								$popup.removeClass('loader');
+						} else if (viewType === 'search') {
+								$popup.addClass('hidden');
+								$closePopUp.addClass('hidden');
+						}
 				}
 		};
 
