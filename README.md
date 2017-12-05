@@ -1,5 +1,4 @@
-# JS-FINAL
-An app for keeping time and date based on location
+# Snack Attack
 
 This app is designed to find your current location and provide a map of locations nearby to get snacks
 
