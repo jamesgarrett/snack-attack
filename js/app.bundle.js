@@ -234,6 +234,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 				},
 				formatPlacesRequest: function formatPlacesRequest() {
 						food = (0, _jquery2.default)(this).attr('value');
+						// food = _.find('-')_.replace(' ');
 
 						// create infowindow for places
 						infoWindow = new google.maps.InfoWindow();

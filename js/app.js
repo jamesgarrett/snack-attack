@@ -174,6 +174,7 @@ $(document).ready(function(){
 		},
 		formatPlacesRequest: function(){
 			food = $(this).attr('value');
+			// food = _.find('-')_.replace(' ');
 
 	        // create infowindow for places
 		    infoWindow = new google.maps.InfoWindow();
