@@ -101,6 +101,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 	var map;
 	var cp;
 	var food;
+	var custom = false;
 
 	// App object to store all app relates methods
 	var App = {
@@ -111,14 +112,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 		bindEvents: function bindEvents() {
 			(0, _jquery2.default)('.snack').on('click', function () {
 				food = (0, _jquery2.default)(this).attr('value');
+				custom = false;
 				App.formatPlacesRequest(food);
 			});
 			(0, _jquery2.default)('.custom-search').keypress(function (event) {
-
 				var keycode = event.keyCode ? event.keyCode : event.which;
 				if (keycode == '13') {
 					food = (0, _jquery2.default)('.custom-search').val();
-					App.formatPlacesRequest(food);
+					custom = true;
+					App.formatPlacesRequest(food, custom);
 				}
 			});
 			(0, _jquery2.default)('.cp').on('click', App.getLocation);
@@ -177,11 +179,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 					App.createMarker(place);
 				}
 			}
+			console.log(results);
 			(0, _jquery2.default)('#popUp').toggleClass('hidden');
 		},
 		createMarker: function createMarker(place) {
 			var placeLoc = place.geometry.location;
-			var foodIcon = '/img/' + food + '.png';
+
+			if (custom === true) {
+				var foodIcon = '/img/pin-2.png';
+			} else {
+				var foodIcon = '/img/' + food + '.png';
+			}
 
 			var marker = new google.maps.Marker({
 				map: map,
@@ -192,6 +200,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 			google.maps.event.addListener(marker, 'click', function () {
 				infoWindow.setContent(place.name);
+				infoWindow.setContent(place.vicinity);
 				infoWindow.open(map, this);
 			});
 		}

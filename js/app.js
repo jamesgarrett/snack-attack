@@ -12,6 +12,7 @@ $(document).ready(function(){
 	var map;
 	var cp;
 	var food;
+	var custom = false;
 
 	// App object to store all app relates methods
 	var App = {
@@ -22,16 +23,16 @@ $(document).ready(function(){
 		bindEvents: function() {
 		  	$('.snack').on('click', function(){
 				food = $(this).attr('value');
+				custom = false;
 		  		App.formatPlacesRequest(food);
 		  	});
 		  	$('.custom-search').keypress(function(event){
-
 				var keycode = (event.keyCode ? event.keyCode : event.which);
 				if(keycode == '13'){
 					food = $('.custom-search').val();
-					App.formatPlacesRequest(food);
+					custom = true;
+					App.formatPlacesRequest(food, custom);
 				}
-
 			});
 		  	$('.cp').on('click', App.getLocation);
 			$('.search').on('click', function(){
@@ -91,11 +92,18 @@ $(document).ready(function(){
 	            	App.createMarker(place);
 	            }
 	        }
+	        console.log(results);
 	        $('#popUp').toggleClass('hidden');
 	    },
 	   	createMarker: function(place) {
 	        var placeLoc = place.geometry.location;
-	        var foodIcon = '/img/' + food + '.png';
+	        
+	        if (custom === true) {
+	        	var foodIcon = '/img/pin-2.png';
+	        } else {
+	        	var foodIcon = '/img/' + food + '.png';
+	        }
+	        
 
 	        var marker = new google.maps.Marker({
 	            map: map,
@@ -106,6 +114,7 @@ $(document).ready(function(){
 
 	        google.maps.event.addListener(marker, 'click', function() {
 	            infoWindow.setContent(place.name);
+	            infoWindow.setContent(place.vicinity);
 	            infoWindow.open(map, this);
 	        });
 	    }
