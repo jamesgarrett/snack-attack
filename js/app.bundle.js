@@ -120,6 +120,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 				var keycode = event.keyCode ? event.keyCode : event.which;
 				if (keycode == '13') {
 					food = (0, _jquery2.default)('.custom-search').val();
+					(0, _jquery2.default)('.custom-search').val('');
 					custom = true;
 					App.formatPlacesRequest(food, custom);
 				}

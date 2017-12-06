@@ -32,6 +32,7 @@ $(document).ready(function(){
 				var keycode = (event.keyCode ? event.keyCode : event.which);
 				if(keycode == '13'){
 					food = $('.custom-search').val();
+					$('.custom-search').val('');
 					custom = true;
 					App.formatPlacesRequest(food, custom);
 				}
