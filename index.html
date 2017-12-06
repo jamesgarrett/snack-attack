@@ -5,6 +5,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <meta name="author" content="github.com/jamesgarrett">
 
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://use.typekit.net/piu0qvd.css">
+
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
@@ -12,39 +16,26 @@
 	<body>
 		<div class="wrap">
 			<header class="text-center">
+				<img src="/img/compass.png" class="cp" alt="compass by william hollowell">
 				<img src="/img/snack-attack.svg" class="logo" alt="snack attack logo">
-				<button class="search"><img src="/img/search.svg" alt=""></button>
+				<img src="/img/search.png" class="search" alt="search button"></button>
 			</header>
-			<section class="cube-container">
-			  <div id="cube">
-			    <figure class="front">
+			<section class="main-container">
 			      <div id="map"></div>
-			    </figure>
-			    <figure class="right hidden">
-			        <ul>			
-			        	<li><h2>What are you in the mood for?</h2></li>
-		                <li class="snack" value="pizza"><img src="/img/pizza-mini.png" alt="">Pizza</li>
-		                <li class="snack" value="tacos"><img src="/img/tacos-mini.png" alt="">Tacos</li>
-		                <li class="snack" value="bagels"><img src="/img/bagels-mini.png" alt="">Bagels</li>
-		                <li class="snack" value="coffee"><img src="/img/coffee-mini.png" alt="">Coffee</li>
-		                <li class="snack" value="ice-cream"><img src="/img/ice-cream-mini.png" alt="">Ice Cream</li>
-			        </ul>
-			    </figure>
-			    <figure class="left">
-			      
-			    </figure>
-			  </div>
 			</section>
-		  
+		  	<img class="loading" src="/img/ice-cream.svg" alt="loading image">
 		</div>
 	</body>
     <div id="popUp" class="loader hidden">
-        <a href="#" class="closePopUp">x</a>
-        <div class="container">
-            <h1>Article Title Here</h1>
-            <p>Article description/content here.</p>
-            <a href="#" class="popUpAction" target="_blank">Read More</a>
-        </div>
+	        <ul class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-12">			
+	        	<h2>What are you in <br>the mood for?</h2>
+	            <li class="snack" value="pizza"><img src="/img/pizza.png" alt="">Pizza<img src="img/crosshairs.png" alt="icon by Wireform USA" class="go"></li>
+	            <li class="snack" value="tacos"><img src="/img/tacos.png" alt="">Tacos<img src="img/crosshairs.png" alt="icon by Wireform USA" class="go"></li>
+	            <li class="snack" value="bagels"><img src="/img/bagels.png" alt="">Bagels<img src="img/crosshairs.png" alt="icon by Wireform USA" class="go"></li>
+	            <li class="snack" value="coffee"><img src="/img/coffee.png" alt="">Coffee<img src="img/crosshairs.png" alt="icon by Wireform USA" class="go"></li>
+	            <li class="snack" value="ice-cream"><img src="/img/ice-cream.png" alt="">Ice Cream<img src="img/crosshairs.png" alt="icon by Wireform USA" class="go"></li>
+	            <li class="custom"><input type="text" class="custom-search" placeholder="Something else?"></li>
+	        </ul>
     </div>
 	<script
     async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwkKhPCVMXGonMlM57zlukKimtZ1Pxpog&libraries=places"></script>

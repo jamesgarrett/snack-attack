@@ -109,12 +109,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 			App.getLocation();
 		},
 		bindEvents: function bindEvents() {
-			(0, _jquery2.default)('.snack').on('click', App.formatPlacesRequest);
-			(0, _jquery2.default)('.search').on('click', function () {
-				(0, _jquery2.default)('.right').toggleClass('hidden');
-			});
 			(0, _jquery2.default)('.snack').on('click', function () {
-				(0, _jquery2.default)('.right').toggleClass('hidden');
+				food = (0, _jquery2.default)(this).attr('value');
+				App.formatPlacesRequest(food);
+			});
+			(0, _jquery2.default)('.custom-search').keypress(function (event) {
+
+				var keycode = event.keyCode ? event.keyCode : event.which;
+				if (keycode == '13') {
+					food = (0, _jquery2.default)('.custom-search').val();
+					App.formatPlacesRequest(food);
+				}
+			});
+			(0, _jquery2.default)('.cp').on('click', App.getLocation);
+			(0, _jquery2.default)('.search').on('click', function () {
+				(0, _jquery2.default)('#popUp').toggleClass('hidden');
 			});
 		},
 		getLocation: function getLocation() {
@@ -145,9 +154,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 				position: cp
 			});
 		},
-		formatPlacesRequest: function formatPlacesRequest() {
-			food = (0, _jquery2.default)(this).attr('value');
-			// food = _.find('-')_.replace(' ');
+		formatPlacesRequest: function formatPlacesRequest(food) {
+			console.log(food);
 
 			// create infowindow for places
 			infoWindow = new google.maps.InfoWindow();
@@ -163,47 +171,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 			service.nearbySearch(request, App.requestPlaces);
 		},
 		requestPlaces: function requestPlaces(results, status) {
-			console.log('places requested');
-			console.log(results);
 			if (status === google.maps.places.PlacesServiceStatus.OK) {
 				for (var i = 0; i < results.length; i++) {
 					var place = results[i];
 					App.createMarker(place);
 				}
 			}
+			(0, _jquery2.default)('#popUp').toggleClass('hidden');
 		},
 		createMarker: function createMarker(place) {
 			var placeLoc = place.geometry.location;
-			var foodIcon = '/img/' + food + '-mini.png';
-			console.log('place location' + placeLoc);
+			var foodIcon = '/img/' + food + '.png';
+
 			var marker = new google.maps.Marker({
 				map: map,
 				position: placeLoc,
 				size: 10,
 				icon: foodIcon
 			});
-			console.log('marker: ' + marker.position);
 
 			google.maps.event.addListener(marker, 'click', function () {
 				infoWindow.setContent(place.name);
 				infoWindow.open(map, this);
 			});
-		},
-		setView: function setView(viewType) {
-			var $popup = (0, _jquery2.default)('#popUp');
-			var $closePopUp = (0, _jquery2.default)('.closePopUp');
-			if (viewType === 'loader') {
-				$popup.removeClass('hidden');
-				$closePopUp.addClass('hidden');
-				$popup.addClass('loader');
-			} else if (viewType === 'map') {
-				$popup.removeClass('hidden');
-				$closePopUp.removeClass('hidden');
-				$popup.removeClass('loader');
-			} else if (viewType === 'search') {
-				$popup.addClass('hidden');
-				$closePopUp.addClass('hidden');
-			}
 		}
 	};
 
@@ -35004,19 +34994,19 @@ process.umask = function() { return 0; };
 
 var icons = {
   bagels: {
-    icon: '/img/bagels-mini.png'
+    icon: '/img/bagels.png'
   },
   coffee: {
-    icon: '/img/coffee-mini.png'
+    icon: '/img/coffee.png'
   },
   pizza: {
-    icon: '/img/pizza-mini.png'
+    icon: '/img/pizza.png'
   },
   tacos: {
-    icon: '/img/taco-mini.png'
+    icon: '/img/taco.png'
   },
   icecream: {
-    icon: '/img/ice-cream-mini.png'
+    icon: '/img/ice-cream.png'
   }
 };
 

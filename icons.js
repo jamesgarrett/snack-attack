@@ -1,18 +1,18 @@
 var icons = {
   bagels: {
-    icon: '/img/bagels-mini.png'
+    icon: '/img/bagels.png'
   },
   coffee: {
-    icon: '/img/coffee-mini.png'
+    icon: '/img/coffee.png'
   },
   pizza: {
-    icon: '/img/pizza-mini.png'
+    icon: '/img/pizza.png'
   },
   tacos: {
-    icon: '/img/taco-mini.png'
+    icon: '/img/taco.png'
   },
   icecream: {
-    icon: '/img/ice-cream-mini.png'
+    icon: '/img/ice-cream.png'
   }
 };
 

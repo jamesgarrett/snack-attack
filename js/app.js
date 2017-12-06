@@ -20,12 +20,22 @@ $(document).ready(function(){
 		  App.getLocation();
 		},
 		bindEvents: function() {
-		  	$('.snack').on('click', App.formatPlacesRequest);
-			$('.search').on('click', function(){
-				$('.right').toggleClass('hidden');
+		  	$('.snack').on('click', function(){
+				food = $(this).attr('value');
+		  		App.formatPlacesRequest(food);
+		  	});
+		  	$('.custom-search').keypress(function(event){
+
+				var keycode = (event.keyCode ? event.keyCode : event.which);
+				if(keycode == '13'){
+					food = $('.custom-search').val();
+					App.formatPlacesRequest(food);
+				}
+
 			});
-			$('.snack').on('click', function(){
-				$('.right').toggleClass('hidden');
+		  	$('.cp').on('click', App.getLocation);
+			$('.search').on('click', function(){
+				$('#popUp').toggleClass('hidden');
 			});
 		},
 		getLocation: function(){
@@ -58,9 +68,8 @@ $(document).ready(function(){
 		    });
 
 		},
-		formatPlacesRequest: function(){
-			food = $(this).attr('value');
-			// food = _.find('-')_.replace(' ');
+		formatPlacesRequest: function(food){
+			console.log(food);
 
 	        // create infowindow for places
 		    infoWindow = new google.maps.InfoWindow();
@@ -76,49 +85,29 @@ $(document).ready(function(){
 	        service.nearbySearch(request, App.requestPlaces);
 		},
 		requestPlaces: function(results, status) {
-			console.log('places requested');
-			console.log(results)
 	        if (status === google.maps.places.PlacesServiceStatus.OK) {
 	            for (var i = 0; i < results.length; i++) {
 	          		var place = results[i];
 	            	App.createMarker(place);
 	            }
 	        }
+	        $('#popUp').toggleClass('hidden');
 	    },
 	   	createMarker: function(place) {
 	        var placeLoc = place.geometry.location;
-	        var foodIcon = '/img/' + food + '-mini.png';
-	        console.log('place location' + placeLoc);
+	        var foodIcon = '/img/' + food + '.png';
+
 	        var marker = new google.maps.Marker({
 	            map: map,
 	            position: placeLoc,
 	            size: 10,
 	            icon: foodIcon
 	        });
-	        console.log('marker: ' + marker.position);
 
 	        google.maps.event.addListener(marker, 'click', function() {
 	            infoWindow.setContent(place.name);
 	            infoWindow.open(map, this);
 	        });
-	    },
-	    setView: function(viewType) {
-			var $popup = $('#popUp');
-			var $closePopUp = $('.closePopUp');
-			if (viewType === 'loader') {
-				$popup.removeClass('hidden');
-				$closePopUp.addClass('hidden');
-				$popup.addClass('loader');
-			}
-			else if (viewType === 'map') {
-				$popup.removeClass('hidden');
-				$closePopUp.removeClass('hidden');
-				$popup.removeClass('loader');
-			}
-			else if (viewType === 'search') {
-				$popup.addClass('hidden');
-				$closePopUp.addClass('hidden');
-			}
 	    }
 	};
 
