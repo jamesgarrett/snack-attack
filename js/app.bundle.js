@@ -105,8 +105,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 	// App object to store all app relates methods
 	var App = {
 		init: function init() {
-			App.setDate();
-			App.setTime();
 			App.bindEvents();
 			App.getLocation();
 		},

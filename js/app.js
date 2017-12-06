@@ -16,8 +16,6 @@ $(document).ready(function(){
 	// App object to store all app relates methods
 	var App = {
 		init: function() {
-		  App.setDate();
-		  App.setTime();
 		  App.bindEvents();
 		  App.getLocation();
 		},
