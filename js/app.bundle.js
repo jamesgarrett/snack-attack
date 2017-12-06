@@ -78,17 +78,17 @@ var _lodash = __webpack_require__(2);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _luxon = __webpack_require__(5);
-
-var _config = __webpack_require__(6);
+var _config = __webpack_require__(5);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _icons = __webpack_require__(8);
+var _icons = __webpack_require__(7);
 
 var _icons2 = _interopRequireDefault(_icons);
 
-var _mapStyles = __webpack_require__(9);
+var _luxon = __webpack_require__(9);
+
+var _mapStyles = __webpack_require__(8);
 
 var _mapStyles2 = _interopRequireDefault(_mapStyles);
 
@@ -98,6 +98,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 	var ct = _luxon.DateTime.local();
 	var infoWindow;
+	var infoWindow2;
 	var map;
 	var cp;
 	var food;
@@ -142,18 +143,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 			// current position
 			cp = coords;
 
-			// create map instance
-			map = new google.maps.Map(document.getElementById('map'), {
-				center: cp,
-				zoom: 16,
-				disableDefaultUI: true,
-				zoomControl: true,
-				styles: _mapStyles2.default
-			});
+			if (ct.hour > 6 && ct.hour < 18) {
+				// create map instance with day styles
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: cp,
+					zoom: 16,
+					disableDefaultUI: true,
+					zoomControl: true,
+					styles: _mapStyles2.default.dayStyles
+				});
+			} else {
+				// create map instance with night styles
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: cp,
+					zoom: 16,
+					disableDefaultUI: true,
+					zoomControl: true,
+					styles: _mapStyles2.default.nightStyles
+				});
+			}
+
+			var eater = '/img/eater.svg';
 
 			var here = new google.maps.Marker({
 				map: map,
-				position: cp
+				position: cp,
+				size: 10,
+				icon: eater
+			});
+
+			infoWindow2 = new google.maps.InfoWindow();
+			var contentString = 'You are here.';
+
+			google.maps.event.addListener(here, 'click', function () {
+				infoWindow2.setContent(contentString);
+				infoWindow2.open(map, this);
 			});
 		},
 		formatPlacesRequest: function formatPlacesRequest(food) {
@@ -179,7 +203,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 					App.createMarker(place);
 				}
 			}
-			console.log(results);
+			// console.log(results);
 			(0, _jquery2.default)('#popUp').toggleClass('hidden');
 		},
 		createMarker: function createMarker(place) {
@@ -188,7 +212,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 			if (custom === true) {
 				var foodIcon = '/img/pin-2.png';
 			} else {
-				var foodIcon = '/img/' + food + '.png';
+				var foodIcon = '/img/' + food + '.svg';
 			}
 
 			var marker = new google.maps.Marker({
@@ -27622,6 +27646,479 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var config = {
+    GM_BASE_URL: process.env.GM_BASE_URL,
+    GM_API_KEY: process.env.GM_API_KEY
+};
+
+module.exports = config;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var icons = {
+  bagels: {
+    icon: '/img/bagels.png'
+  },
+  coffee: {
+    icon: '/img/coffee.png'
+  },
+  pizza: {
+    icon: '/img/pizza.png'
+  },
+  tacos: {
+    icon: '/img/taco.png'
+  },
+  icecream: {
+    icon: '/img/ice-cream.png'
+  }
+};
+
+module.exports = icons;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var nightStyles = [{
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#212121"
+  }]
+}, {
+  "elementType": "labels.icon",
+  "stylers": [{
+    "visibility": "off"
+  }]
+}, {
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#757575"
+  }]
+}, {
+  "elementType": "labels.text.stroke",
+  "stylers": [{
+    "color": "#212121"
+  }]
+}, {
+  "featureType": "administrative",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#757575"
+  }]
+}, {
+  "featureType": "administrative.country",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#9e9e9e"
+  }]
+}, {
+  "featureType": "administrative.land_parcel",
+  "stylers": [{
+    "visibility": "off"
+  }]
+}, {
+  "featureType": "administrative.locality",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#bdbdbd"
+  }]
+}, {
+  "featureType": "poi",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#757575"
+  }]
+}, {
+  "featureType": "poi.park",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#181818"
+  }]
+}, {
+  "featureType": "poi.park",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#616161"
+  }]
+}, {
+  "featureType": "poi.park",
+  "elementType": "labels.text.stroke",
+  "stylers": [{
+    "color": "#1b1b1b"
+  }]
+}, {
+  "featureType": "road",
+  "elementType": "geometry.fill",
+  "stylers": [{
+    "color": "#2c2c2c"
+  }]
+}, {
+  "featureType": "road",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#8a8a8a"
+  }]
+}, {
+  "featureType": "road.arterial",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#373737"
+  }]
+}, {
+  "featureType": "road.highway",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#3c3c3c"
+  }]
+}, {
+  "featureType": "road.highway.controlled_access",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#4e4e4e"
+  }]
+}, {
+  "featureType": "road.local",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#616161"
+  }]
+}, {
+  "featureType": "transit",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#757575"
+  }]
+}, {
+  "featureType": "water",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#000000"
+  }]
+}, {
+  "featureType": "water",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#3d3d3d"
+  }]
+}];
+
+var dayStyles = [{
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#f5f5f5"
+  }]
+}, {
+  "elementType": "labels.icon",
+  "stylers": [{
+    "visibility": "off"
+  }]
+}, {
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#616161"
+  }]
+}, {
+  "elementType": "labels.text.stroke",
+  "stylers": [{
+    "color": "#f5f5f5"
+  }]
+}, {
+  "featureType": "administrative.land_parcel",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#bdbdbd"
+  }]
+}, {
+  "featureType": "poi",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#eeeeee"
+  }]
+}, {
+  "featureType": "poi",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#757575"
+  }]
+}, {
+  "featureType": "poi.park",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#e5e5e5"
+  }]
+}, {
+  "featureType": "poi.park",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#9e9e9e"
+  }]
+}, {
+  "featureType": "road",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#ffffff"
+  }]
+}, {
+  "featureType": "road.arterial",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#757575"
+  }]
+}, {
+  "featureType": "road.highway",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#dadada"
+  }]
+}, {
+  "featureType": "road.highway",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#616161"
+  }]
+}, {
+  "featureType": "road.local",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#9e9e9e"
+  }]
+}, {
+  "featureType": "transit.line",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#e5e5e5"
+  }]
+}, {
+  "featureType": "transit.station",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#eeeeee"
+  }]
+}, {
+  "featureType": "water",
+  "elementType": "geometry",
+  "stylers": [{
+    "color": "#c9c9c9"
+  }]
+}, {
+  "featureType": "water",
+  "elementType": "labels.text.fill",
+  "stylers": [{
+    "color": "#9e9e9e"
+  }]
+}];
+
+module.exports = {
+  nightStyles: nightStyles,
+  dayStyles: dayStyles
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -34789,309 +35286,6 @@ exports.Zone = Zone;
 exports.Settings = Settings;
 //# sourceMappingURL=luxon.js.map
 
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var config = {
-    GM_BASE_URL: process.env.GM_BASE_URL,
-    GM_API_KEY: process.env.GM_API_KEY
-};
-
-module.exports = config;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var icons = {
-  bagels: {
-    icon: '/img/bagels.png'
-  },
-  coffee: {
-    icon: '/img/coffee.png'
-  },
-  pizza: {
-    icon: '/img/pizza.png'
-  },
-  tacos: {
-    icon: '/img/taco.png'
-  },
-  icecream: {
-    icon: '/img/ice-cream.png'
-  }
-};
-
-module.exports = icons;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mapStyles = [{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] }, { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] }, { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] }, {
-  featureType: 'administrative.locality',
-  elementType: 'labels.text.fill',
-  stylers: [{ color: '#d59563' }]
-}, {
-  featureType: 'poi',
-  elementType: 'labels.text.fill',
-  stylers: [{ visibility: 'off' }]
-}, {
-  featureType: 'poi.park',
-  elementType: 'geometry',
-  stylers: [{ color: '#263c3f' }]
-}, {
-  featureType: 'poi.park',
-  elementType: 'labels.text.fill',
-  stylers: [{ color: '#6b9a76' }]
-}, {
-  featureType: 'road',
-  elementType: 'geometry',
-  stylers: [{ color: '#38414e' }]
-}, {
-  featureType: 'road',
-  elementType: 'geometry.stroke',
-  stylers: [{ color: '#212a37' }]
-}, {
-  featureType: 'road',
-  elementType: 'labels.text.fill',
-  stylers: [{ color: '#9ca5b3' }]
-}, {
-  featureType: 'road.highway',
-  elementType: 'geometry',
-  stylers: [{ color: '#746855' }]
-}, {
-  featureType: 'road.highway',
-  elementType: 'geometry.stroke',
-  stylers: [{ color: '#1f2835' }]
-}, {
-  featureType: 'road.highway',
-  elementType: 'labels.text.fill',
-  stylers: [{ color: '#f3d19c' }]
-}, {
-  featureType: 'transit',
-  elementType: 'geometry',
-  stylers: [{ color: '#2f3948' }]
-}, {
-  featureType: 'transit.station',
-  elementType: 'labels.text.fill',
-  stylers: [{ color: '#d59563' }]
-}, {
-  featureType: 'water',
-  elementType: 'geometry',
-  stylers: [{ color: '#17263c' }]
-}, {
-  featureType: 'water',
-  elementType: 'labels.text.fill',
-  stylers: [{ color: '#515c6d' }]
-}, {
-  featureType: 'water',
-  elementType: 'labels.text.stroke',
-  stylers: [{ color: '#17263c' }]
-}];
-
-module.exports = mapStyles;
 
 /***/ })
 /******/ ]);

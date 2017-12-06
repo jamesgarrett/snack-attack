@@ -2,11 +2,15 @@ import $ from 'jquery';
 import _ from 'lodash';
 import config from '../config';
 import icons from '../icons';
-import mapStyles from '../mapStyles';
+import {DateTime} from 'luxon';
+import dayStyles from '../mapStyles';
+import nightStyles from '../mapStyles';
 
 $(document).ready(function(){
 
+	var ct = DateTime.local();
 	var infoWindow;
+	var infoWindow2;
 	var map;
 	var cp;
 	var food;
@@ -51,20 +55,45 @@ $(document).ready(function(){
 	    	// current position
 	    	cp = coords;
 
-	    	// create map instance
-	        map = new google.maps.Map(
-	        	document.getElementById('map'), {
-	        	center: cp,
-	        	zoom: 16,
-	        	disableDefaultUI: true,
-	        	zoomControl: true,
-	        	styles: mapStyles
-		    });
+	    	if (ct.hour > 6 && ct.hour < 18){
+		    	// create map instance with day styles
+		        map = new google.maps.Map(
+		        	document.getElementById('map'), {
+		        	center: cp,
+		        	zoom: 16,
+		        	disableDefaultUI: true,
+		        	zoomControl: true,
+		        	styles: dayStyles.dayStyles
+			    });
+
+	    	} else {
+	    		// create map instance with night styles
+		        map = new google.maps.Map(
+		        	document.getElementById('map'), {
+		        	center: cp,
+		        	zoom: 16,
+		        	disableDefaultUI: true,
+		        	zoomControl: true,
+		        	styles: nightStyles.nightStyles
+			    });
+	    	}
+
+		    var eater = '/img/eater.svg';
 
 		    var here = new google.maps.Marker({
 		    	map: map,
-		    	position: cp
+		    	position: cp,
+		    	size: 10,
+		    	icon: eater
 		    });
+
+		    infoWindow2 = new google.maps.InfoWindow();
+		    var contentString = 'You are here.';
+
+	        google.maps.event.addListener(here, 'click', function() {
+	            infoWindow2.setContent(contentString);
+	            infoWindow2.open(map, this);
+	        });
 
 		},
 		formatPlacesRequest: function(food){
@@ -99,7 +128,7 @@ $(document).ready(function(){
 	        if (custom === true) {
 	        	var foodIcon = '/img/pin-2.png';
 	        } else {
-	        	var foodIcon = `/img/${food}.png`;
+	        	var foodIcon = `/img/${food}.svg`;
 	        }
 
 	        var marker = new google.maps.Marker({
