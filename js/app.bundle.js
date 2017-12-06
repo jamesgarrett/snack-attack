@@ -198,8 +198,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 				icon: foodIcon
 			});
 
+			var contentString = '<h6>' + place.name + '</h6><p>' + place.vicinity + '</p>';
+
 			google.maps.event.addListener(marker, 'click', function () {
-				infoWindow.setContent(place.name);
+				infoWindow.setContent(contentString);
 				infoWindow.open(map, this);
 			});
 		}

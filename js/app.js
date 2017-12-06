@@ -1,13 +1,11 @@
 import $ from 'jquery';
 import _ from 'lodash';
-import {DateTime} from 'luxon';
 import config from '../config';
 import icons from '../icons';
 import mapStyles from '../mapStyles';
 
 $(document).ready(function(){
 
-	var ct = DateTime.local();
 	var infoWindow;
 	var map;
 	var cp;
@@ -92,7 +90,7 @@ $(document).ready(function(){
 	            	App.createMarker(place);
 	            }
 	        }
-	        console.log(results);
+	        // console.log(results);
 	        $('#popUp').toggleClass('hidden');
 	    },
 	   	createMarker: function(place) {
@@ -101,9 +99,8 @@ $(document).ready(function(){
 	        if (custom === true) {
 	        	var foodIcon = '/img/pin-2.png';
 	        } else {
-	        	var foodIcon = '/img/' + food + '.png';
+	        	var foodIcon = `/img/${food}.png`;
 	        }
-	        
 
 	        var marker = new google.maps.Marker({
 	            map: map,
@@ -112,8 +109,10 @@ $(document).ready(function(){
 	            icon: foodIcon
 	        });
 
+	        var contentString = `<h6>${place.name}</h6><p>${place.vicinity}</p>`;
+
 	        google.maps.event.addListener(marker, 'click', function() {
-	            infoWindow.setContent(place.name);
+	            infoWindow.setContent(contentString);
 	            infoWindow.open(map, this);
 	        });
 	    }

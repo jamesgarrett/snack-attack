@@ -1,7 +1,7 @@
 {
-  "name": "image-clock",
+  "name": "snack-attack",
   "version": "1.0.0",
-  "description": "an app for keeping time and date based on location",
+  "description": "an app for finding snacks",
   "main": "app.js",
   "dependencies": {
     "@google/maps": "^0.4.5",
@@ -12,7 +12,6 @@
     "http-server": "^0.10.0",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
-    "luxon": "^0.2.3",
     "nearby-cities": "^1.1.0",
     "webpack": "^3.8.1"
   },
