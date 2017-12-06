@@ -114,7 +114,6 @@ $(document).ready(function(){
 
 	        google.maps.event.addListener(marker, 'click', function() {
 	            infoWindow.setContent(place.name);
-	            infoWindow.setContent(place.vicinity);
 	            infoWindow.open(map, this);
 	        });
 	    }

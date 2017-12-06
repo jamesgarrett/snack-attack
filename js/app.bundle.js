@@ -200,7 +200,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 			google.maps.event.addListener(marker, 'click', function () {
 				infoWindow.setContent(place.name);
-				infoWindow.setContent(place.vicinity);
 				infoWindow.open(map, this);
 			});
 		}
