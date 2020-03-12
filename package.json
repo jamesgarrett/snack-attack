@@ -21,6 +21,9 @@
     "server": "node_modules/http-server/bin/http-server -c-1",
     "start": "npm run webpack & npm run server"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamesgarrett/JS-FINAL.git"
