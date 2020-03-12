@@ -1,6 +1,6 @@
 {
   "name": "snack-attack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "an app for finding snacks",
   "main": "app.js",
   "dependencies": {

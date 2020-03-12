@@ -1,15 +1,33 @@
 .wrap{
-	width:100%;
-	height:100%;
-	background-image: linear-gradient(-180deg, #96FFED 0%, #FFFFFF 100%);
+		width:100%;
+		height:100%;
+		background-image: linear-gradient(-180deg, #96FFED 0%, #FFFFFF 100%);
 }
 
 header{
-  position:fixed;
-  top:0;
-  height:15vh;
-  width:100%;
-  z-index:3;
+	  position:fixed;
+	  top:0;
+	  height:15vh;
+	  width:100%;
+	  z-index:3;
+}
+
+@media screen and (max-width:768px){
+	header{
+		top:unset !important;
+		bottom:0;
+	}
+	#map{
+		top:unset !important;
+		bottom:0;
+	}
+	#popUp{
+		padding-top:1rem !important;
+		padding-bottom: 15vh;
+	}
+	.wrap{
+			background-image: linear-gradient(-180deg, #FFFFFF 0%, #96FFED 100%);
+	}
 }
 
 .logo {
@@ -21,12 +39,11 @@ header{
 }
 
 .loading{
-	position: fixed;
-	top:50%;
-	left:50%;
-	z-index:0;
-	/*transform: translateY(-50%) translateX(-50%);*/
-	margin:-60px 0 0 -60px;
+		position: fixed;
+		top:50%;
+		left:50%;
+		z-index:0;
+		margin:-60px 0 0 -60px;
     -webkit-animation:spin 4s linear 1;
     -moz-animation:spin 4s linear 1;
     animation:spin 4s linear 1;
@@ -60,27 +77,27 @@ header{
 	right:auto !important;
 }
 
-#popUp{
+#popUp {
     position: fixed;
-    top:0;
-    right: 0;
-    display: flex;
+    top: 0;
+    display: grid;
     width: 100%;
-    height:100%;
-    margin: 0px;
+    height: 100%;
     padding-top: 15vh;
+    justify-content: center;
     text-align: center;
     z-index: 2;
-	background-image: linear-gradient(-180deg, #A996FF 0%, #FFFFFF 100%);
+    background-image: linear-gradient(-180deg, #A996FF 0%, #FFFFFF 100%);
 }
 
-#popUp *{
-    flex-grow: 1;
-    flex-direction: vertical;
+#popUp ul {
+    display: grid;
+    align-items: center;
+    padding-left: 0;
 }
 
 #popUp h2{
-	font-family: "futura-pt-bold", sans-serif;
+		font-family: "futura-pt-bold", sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
     font-size: 1.25rem;
@@ -88,9 +105,10 @@ header{
 }
 
 .snack, .custom{
-	text-align: left;
+		text-align: center;
     list-style-type: none;
-    padding: 10px;
+    padding: 1rem 0;
+		min-width: 350px;
     font-family: "futura-pt-bold", sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
@@ -100,6 +118,7 @@ header{
 }
 
 input.custom-search {
+		text-align: center;
     background: transparent;
     border: none;
     outline: none;
@@ -116,7 +135,7 @@ li.snack:hover {
 }
 
 .snack img{
-	margin-right:10px;
+		margin-right:10px;
 }
 
 .snack .go{
