@@ -1,5 +1,6 @@
-# Snack Attack
+#Snack Attack
+A Google Places enabled Snack Locator. An application by [James Garrett].
 
-This app is designed to find your current location and provide a map of locations nearby to get snacks
+MIT License
 
-The app uses the google places API and the built in query function to find different types of snacks near you.
+Copyright (c) 2017 James Garrett Inc.
